@@ -36,7 +36,9 @@ const Input: React.FC<InputProps> = ({
         onChange={(e) => setInputValue(e.target.value)}
       />
       {inputValue === "" && (
-        <InputLabel error={!!errors[id]}>{label}</InputLabel>
+        <InputLabel htmlFor={id} error={!!errors[id]}>
+          {label}
+        </InputLabel>
       )}
     </InputContainer>
   );

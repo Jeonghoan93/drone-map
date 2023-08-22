@@ -11,4 +11,6 @@ export const Header = styled.div<HeaderProps>`
 export const Main = styled.main`
   margin-left: auto;
   margin-right: auto;
+
+  height: 100%;
 `;

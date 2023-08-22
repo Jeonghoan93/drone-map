@@ -11,7 +11,8 @@ export const StyledInput = styled.input<{
   width: 100%;
 
   font-weight: 300;
-  height: 24px;
+  height: 30px;
+
   background-color: #fff;
   border: 2px solid ${({ error }) => (error ? "#F87171" : "#D1D5DB")};
   border-radius: 8px;
@@ -30,9 +31,9 @@ export const InputLabel = styled.label<{
   error?: boolean;
 }>`
   position: absolute;
-  top: 5px;
+  top: 8px;
   left: 10px;
-  font-size: 1rem;
+  font-size: 0.8rem;
   transform: translateY(0);
   transition: all 0.15s ease;
   color: ${({ error }) => (error ? "#F87171" : "#9CA3AF")};

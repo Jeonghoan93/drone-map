@@ -28,10 +28,6 @@ const DroneUpdateForm: React.FC<DroneUpdateFormProps> = ({
         const drone = await getDroneById(droneId);
         setValue("name", drone.name);
         setValue("description", drone.description);
-        if (drone.position) {
-          setValue("position.lat", drone.position.lat);
-          setValue("position.lon", drone.position.lon);
-        }
         setValue("speedMs", drone.speedMs);
         setValue("heading", drone.heading);
         setValue("heightMeters", drone.heightMeters);
@@ -47,6 +43,8 @@ const DroneUpdateForm: React.FC<DroneUpdateFormProps> = ({
     try {
       await updateDrone(droneId, data);
 
+      alert("Drone updated successfully");
+
       onUpdated();
     } catch (err) {
       console.error("Failed to update drone:", err);
@@ -57,56 +55,53 @@ const DroneUpdateForm: React.FC<DroneUpdateFormProps> = ({
     <FormContainer onSubmit={handleSubmit(onSubmit)}>
       <Input
         id="name"
-        label="Name"
+        label="Name (At least 3 alphanumeric characters)"
         register={register}
         errors={errors}
         required={true}
+        pattern={/^[a-zA-Z0-9]{3,}$/}
       />
+
       <Input
         id="description"
         label="Description"
         register={register}
-        errors={errors}
-      />
-      <Input
-        id="lat"
-        label="Latitude"
-        type="number"
-        register={register}
-        errors={errors}
         required={true}
-      />
-      <Input
-        id="lon"
-        label="Longitude"
-        type="number"
-        register={register}
         errors={errors}
-        required={true}
       />
+
       <Input
         id="speedMs"
-        label="Speed (m/s)"
+        label="Speed (m/s, between 0 and 20)"
         type="number"
         register={register}
         errors={errors}
         required={true}
+        min={0}
+        max={20}
+        pattern={/^\d+(\.\d{1,2})?$/}
       />
+
       <Input
         id="heading"
-        label="Heading (degrees)"
+        label="Heading (Degrees, between 0 and 360)"
         type="number"
         register={register}
         errors={errors}
         required={true}
+        min={0}
+        max={360}
       />
+
       <Input
         id="heightMeters"
-        label="Height (meters)"
+        label="Height (Meters, between 0 and 1000)"
         type="number"
         register={register}
         errors={errors}
         required={true}
+        min={0}
+        max={1000}
       />
       <CreateButton type="submit">Update Drone</CreateButton>
     </FormContainer>

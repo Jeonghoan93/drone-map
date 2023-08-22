@@ -15,7 +15,9 @@ import {
 const DroneList: React.FC = () => {
   const [drones, setDrones] = useState<Drone[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [expandedDroneId, setExpandedDroneId] = useState<number | null>(null);
+  const [expandedDroneId, setExpandedDroneId] = useState<
+    number | null | undefined
+  >(null);
 
   useEffect(() => {
     const fetchDrones = async () => {
@@ -24,7 +26,7 @@ const DroneList: React.FC = () => {
 
         setDrones(fetchedDrones);
       } catch (err) {
-        setError(err.message);
+        setError("Failed to fetch drones");
       }
     };
 
@@ -36,9 +38,13 @@ const DroneList: React.FC = () => {
 
     try {
       await deleteDrone(id);
+
+      alert("Drone deleted successfully");
+
       setDrones((prevDrones) => prevDrones.filter((drone) => drone.id !== id));
     } catch (err) {
-      setError(err.message);
+      setError("Failed to delete drone");
+      alert("Failed to delete drone");
     }
   };
 

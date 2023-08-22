@@ -6,9 +6,7 @@ import { Modal } from "src/components/Modal";
 import Navbar from "../components/Navbar";
 import { Header, Main } from "./styles";
 
-type Props = {};
-
-const Layout = (props: Props) => {
+const Layout = () => {
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
   const [isListModalOpen, setIsListModalOpen] = useState(false);
 

@@ -1,15 +1,9 @@
 import React from "react";
-import {
-  FieldValues,
-  SubmitHandler,
-  UseFormRegister,
-  useForm,
-} from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import Input from "src/components/Input";
 import { createDrone } from "src/services/api";
-import { CreateButton, FormContainer } from "./styles";
-
-import { Drone } from "src/shared/types";
+import { Drone } from "src/shared/types.ts";
+import { CreateButton, FormContainer } from "./styles.ts";
 
 const DroneForm: React.FC = () => {
   const {
@@ -21,11 +15,11 @@ const DroneForm: React.FC = () => {
   const onSubmit: SubmitHandler<Drone> = async (data) => {
     try {
       await createDrone(data);
-
-      alert("Drone created successfully");
+      console.log("Drone created successfully");
+      // You can reset the form, redirect user or show success message here
     } catch (err) {
-      alert("An unexpected error occurred. Please try again.");
-      //TODO can change this later for more user friendly
+      console.error("Failed to create drone:", err);
+      // Handle error, e.g., show an error message to the user
     }
   };
 
@@ -33,75 +27,59 @@ const DroneForm: React.FC = () => {
     <FormContainer onSubmit={handleSubmit(onSubmit)}>
       <Input
         id="name"
-        label="Name (At least 3 alphanumeric characters)"
+        label="Name"
         register={register}
         errors={errors}
         required={true}
-        pattern={/^[a-zA-Z0-9]{3,}$/}
       />
 
       <Input
         id="description"
         label="Description"
-        register={register as unknown as UseFormRegister<FieldValues>}
-        required={true}
+        register={register}
         errors={errors}
       />
 
       <Input
         id="position.lat"
-        label="Latitude (Between -90 and 90)"
+        label="Latitude"
         type="number"
         register={register}
         errors={errors}
         required={true}
-        min={-90}
-        max={90}
       />
 
       <Input
         id="position.lon"
-        label="Longitude (Between -180 and 180)"
+        label="Longitude"
         type="number"
         register={register}
         errors={errors}
         required={true}
-        min={-180}
-        max={180}
       />
-
       <Input
         id="speedMs"
-        label="Speed (m/s, between 0 and 20)"
+        label="Speed (m/s)"
         type="number"
         register={register}
         errors={errors}
         required={true}
-        min={0}
-        max={20}
-        pattern={/^\d+(\.\d{1,2})?$/}
       />
-
       <Input
         id="heading"
-        label="Heading (Degrees, between 0 and 360)"
+        label="Heading (degrees)"
         type="number"
         register={register}
         errors={errors}
         required={true}
-        min={0}
-        max={360}
       />
-
       <Input
         id="heightMeters"
-        label="Height (Meters, between 0 and 1000)"
+        label="Height (meters)"
         type="number"
         register={register}
         errors={errors}
         required={true}
-        min={0}
-        max={1000}
       />
 
       <CreateButton type="submit">Create Drone</CreateButton>

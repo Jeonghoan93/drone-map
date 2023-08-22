@@ -6,6 +6,14 @@ export const GlobalFonts = createGlobalStyle`
 `;
 
 export default createGlobalStyle`
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden; 
+  }
+  
   body {
     color: ${colors.textDarkest};
     font-family: 'Open Sans', sans-serif;

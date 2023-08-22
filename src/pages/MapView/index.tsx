@@ -3,8 +3,6 @@ import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import { getDrones } from "src/services/api"; // Adjust the path accordingly
 import { Drone } from "src/shared/types";
 
-import socket from "src/services/socket";
-
 const MapView: React.FC = () => {
   const [drones, setDrones] = useState<Drone[]>([]);
 
@@ -21,16 +19,16 @@ const MapView: React.FC = () => {
   useEffect(() => {
     getDrones()
       .then((data) => {
-        console.log("Fetched drones:", data);
         setDrones(data);
       })
       .catch((error) => {
         console.error("Error fetching drones:", error);
       });
 
+    const socket = new WebSocket("ws://localhost/ws");
+
     socket.onmessage = (event) => {
       const updatedDrone: Drone = JSON.parse(event.data);
-      console.log("WebSocket drone update:", updatedDrone);
       updateDroneRealTime(updatedDrone);
     };
 
@@ -44,7 +42,10 @@ const MapView: React.FC = () => {
     <MapContainer
       center={defaultCenter}
       zoom={13}
-      style={{ width: "100%", height: "600px" }}
+      style={{
+        width: "100vw",
+        height: "800px",
+      }}
     >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -68,4 +69,4 @@ const MapView: React.FC = () => {
   );
 };
 
-export default MapView;
+export default React.memo(MapView);

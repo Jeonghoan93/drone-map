@@ -68,21 +68,25 @@ const DroneList: React.FC = () => {
                 <td>{drone.heightMeters}</td>
                 <td>{drone.heading}</td>
                 <td>
-                  <button onClick={() => handleDelete(drone.id)}>Delete</button>
-                  <button
-                    onClick={() =>
-                      setExpandedDroneId(
-                        drone.id === expandedDroneId ? null : drone.id
-                      )
-                    }
-                  >
-                    {expandedDroneId === drone.id ? (
-                      <FiChevronUp />
-                    ) : (
-                      <FiChevronDown />
-                    )}
-                    Update
-                  </button>
+                  <div className="action-buttons">
+                    <button onClick={() => handleDelete(drone.id)}>
+                      Delete
+                    </button>
+                    <button
+                      onClick={() =>
+                        setExpandedDroneId(
+                          drone.id === expandedDroneId ? null : drone.id
+                        )
+                      }
+                    >
+                      Update
+                      {expandedDroneId === drone.id ? (
+                        <FiChevronUp />
+                      ) : (
+                        <FiChevronDown />
+                      )}
+                    </button>
+                  </div>
                 </td>
               </tr>
               {expandedDroneId === drone.id && (

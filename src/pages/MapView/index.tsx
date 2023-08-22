@@ -3,8 +3,19 @@ import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import { getDrones } from "src/services/api"; // Adjust the path accordingly
 import { Drone } from "src/shared/types";
 
+import socket from "src/services/socket";
+
 const MapView: React.FC = () => {
   const [drones, setDrones] = useState<Drone[]>([]);
+
+  const updateDronesWithRealtimeData = (updatedDrone: Drone) => {
+    setDrones((prevState) => {
+      const otherDrones = prevState.filter(
+        (drone) => drone.id !== updatedDrone.id
+      );
+      return [...otherDrones, updatedDrone];
+    });
+  };
 
   const mapCenter: [number, number] = drones.length
     ? [
@@ -29,6 +40,16 @@ const MapView: React.FC = () => {
       }
     };
     fetchDrones();
+
+    socket.on("droneUpdate", (updatedDrone: Drone) => {
+      console.log("Received drone update:", updatedDrone);
+
+      updateDronesWithRealtimeData(updatedDrone);
+    });
+
+    return () => {
+      socket.off("droneUpdate", updateDronesWithRealtimeData); // clean up if component unmounts
+    };
   }, []);
 
   return (

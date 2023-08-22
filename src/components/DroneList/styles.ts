@@ -44,36 +44,46 @@ export const DroneTable = styled.table`
         padding: 10px 15px;
         border-bottom: 1px solid #eee;
 
-        // Styles for Action buttons
-        button {
-          padding: 5px 10px;
-          margin-right: 10px;
-          border: none;
-          border-radius: 4px;
-          cursor: pointer;
-          transition: background-color 0.3s;
+        .action-buttons {
+          display: flex;
+          align-items: center;
 
-          &:last-child {
-            margin-right: 0;
-          }
+          button {
+            padding: 5px 10px;
+            margin-right: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
 
-          // Styles for the Delete button
-          &:first-child {
-            background-color: red;
-            color: white;
+            display: flex;
 
-            &:hover {
-              background-color: darkred;
+            svg {
+              margin-left: 5px;
             }
-          }
 
-          // Styles for the Update button
-          &:last-child {
-            background-color: blue;
-            color: white;
+            &:last-child {
+              margin-right: 0;
+            }
 
-            &:hover {
-              background-color: darkblue;
+            // Delete button
+            &:first-child {
+              background-color: red;
+              color: white;
+
+              &:hover {
+                background-color: darkred;
+              }
+            }
+
+            // Update button
+            &:last-child {
+              background-color: blue;
+              color: white;
+
+              &:hover {
+                background-color: darkblue;
+              }
             }
           }
         }

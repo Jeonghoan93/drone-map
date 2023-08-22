@@ -30,4 +30,5 @@ export const sizes = {
   screenMobileMaxWidth: 768,
 
   modalMaxWidth: 450,
+  NavbarHeight: 60,
 };

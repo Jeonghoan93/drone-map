@@ -32,13 +32,14 @@ export const StyledInput = styled.input<{
 `;
 
 export const InputLabel = styled.label<{
+  isFilled?: boolean;
   error?: boolean;
 }>`
   position: absolute;
   top: 8px;
   left: 10px;
   font-size: 0.8rem;
-  transform: translateY(0);
+  opacity: ${({ isFilled }) => (isFilled ? "0" : "1")};
   transition: all 0.15s ease;
   color: ${({ error }) => (error ? "#F87171" : "#9CA3AF")};
   z-index: 10;

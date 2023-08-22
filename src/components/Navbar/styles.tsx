@@ -6,9 +6,11 @@ export const StyledNavbar = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
+  padding: 0 2rem;
   background-color: #2c3e50;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  height: ${sizes.NavbarHeight}px;
 `;
 
 export const Brand = styled(Link)`

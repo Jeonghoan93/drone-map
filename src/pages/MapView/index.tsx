@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import {
+  MapContainer,
+  Marker,
+  Popup,
+  TileLayer,
+  ZoomControl,
+} from "react-leaflet";
 import { getDrones } from "src/services/api"; // Adjust the path accordingly
 import { Drone } from "src/shared/types";
 
@@ -21,8 +27,8 @@ const MapView: React.FC = () => {
       .then((data) => {
         setDrones(data);
       })
-      .catch((error) => {
-        console.error("Error fetching drones:", error);
+      .catch((err) => {
+        throw new Error(err);
       });
 
     const socket = new WebSocket("ws://localhost/ws");
@@ -41,12 +47,14 @@ const MapView: React.FC = () => {
   return (
     <MapContainer
       center={defaultCenter}
-      zoom={13}
+      zoom={10}
       style={{
         width: "100vw",
-        height: "800px",
+        height: "100vh",
       }}
+      zoomControl={false}
     >
+      <ZoomControl position="bottomright" />
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

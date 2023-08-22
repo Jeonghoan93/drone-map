@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { deleteDrone, getDrones } from "src/services/api";
 import { Drone } from "src/shared/types";
-
 import DroneUpdateForm from "../DroneUpdateForm";
-
-import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import {
   DroneListContainer,
   DroneListHeader,
@@ -19,18 +17,17 @@ const DroneList: React.FC = () => {
     number | null | undefined
   >(null);
 
+  const refetchDrones = async () => {
+    try {
+      const fetchedDrones = await getDrones();
+      setDrones(fetchedDrones);
+    } catch (err) {
+      setError("Failed to fetch drones");
+    }
+  };
+
   useEffect(() => {
-    const fetchDrones = async () => {
-      try {
-        const fetchedDrones = await getDrones();
-
-        setDrones(fetchedDrones);
-      } catch (err) {
-        setError("Failed to fetch drones");
-      }
-    };
-
-    fetchDrones();
+    refetchDrones();
   }, []);
 
   const handleDelete = async (id: number | undefined) => {
@@ -38,9 +35,7 @@ const DroneList: React.FC = () => {
 
     try {
       await deleteDrone(id);
-
       alert("Drone deleted successfully");
-
       setDrones((prevDrones) => prevDrones.filter((drone) => drone.id !== id));
     } catch (err) {
       setError("Failed to delete drone");
@@ -96,10 +91,13 @@ const DroneList: React.FC = () => {
               </tr>
               {expandedDroneId === drone.id && (
                 <tr>
-                  <td colSpan={/* Number of your columns */ 8}>
+                  <td colSpan={/* Number of columns */ 8}>
                     <DroneUpdateForm
                       droneId={drone.id!}
-                      onUpdated={() => setExpandedDroneId(null)}
+                      onUpdated={() => {
+                        setExpandedDroneId(null);
+                        refetchDrones();
+                      }}
                     />
                   </td>
                 </tr>

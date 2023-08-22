@@ -37,7 +37,7 @@ const DroneUpdateForm: React.FC<DroneUpdateFormProps> = ({
         setValue("heading", drone.heading);
         setValue("heightMeters", drone.heightMeters);
       } catch (err) {
-        console.error("Failed to fetch drone details:", err);
+        alert("Failed to fetch drone! Please try again.");
       }
     }
 
@@ -52,7 +52,7 @@ const DroneUpdateForm: React.FC<DroneUpdateFormProps> = ({
 
       onUpdated();
     } catch (err) {
-      console.error("Failed to update drone:", err);
+      alert("Failed to update drone! Please try again.");
     }
   };
 

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
 import { InputContainer, InputLabel, StyledInput } from "./styles";
 
@@ -27,14 +27,7 @@ const Input: React.FC<InputProps> = ({
   min,
   max,
 }) => {
-  const inputRef = useRef<HTMLInputElement | null>(null);
   const [isFilled, setIsFilled] = useState(false);
-
-  useEffect(() => {
-    if (inputRef.current) {
-      setIsFilled(inputRef.current.value !== "");
-    }
-  }, [inputRef]);
 
   return (
     <InputContainer>
@@ -51,11 +44,9 @@ const Input: React.FC<InputProps> = ({
           setIsFilled(e.target.value !== "");
         }}
       />
-      {!isFilled && (
-        <InputLabel htmlFor={id} error={!!errors[id]}>
-          {label}
-        </InputLabel>
-      )}
+      <InputLabel htmlFor={id} isFilled={isFilled} error={!!errors[id]}>
+        {label}
+      </InputLabel>
     </InputContainer>
   );
 };

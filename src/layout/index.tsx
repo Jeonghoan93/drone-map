@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
-import DroneForm from "src/components/DroneForm";
+import DroneForm from "src/components/DroneCreateForm";
 import DroneList from "src/components/DroneList";
 import { Modal } from "src/components/Modal";
 import Navbar from "../components/Navbar";

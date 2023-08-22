@@ -3,10 +3,20 @@ import { deleteDrone } from "src/services/api";
 import { Drone } from "src/shared/types";
 
 import { fakeDronesData } from "src/assets/fake-data";
+import DroneUpdateForm from "../DroneUpdateForm";
+
+import { FiChevronDown, FiChevronUp } from "react-icons/fi";
+import {
+  DroneListContainer,
+  DroneListHeader,
+  DroneTable,
+  ErrorMessage,
+} from "./styles";
 
 const DroneList: React.FC = () => {
   const [drones, setDrones] = useState<Drone[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [expandedDroneId, setExpandedDroneId] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchDrones = async () => {
@@ -34,10 +44,10 @@ const DroneList: React.FC = () => {
   };
 
   return (
-    <div>
-      <h2>Drones List</h2>
-      {error && <p>{error}</p>}
-      <table>
+    <DroneListContainer>
+      <DroneListHeader>Drones List</DroneListHeader>
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+      <DroneTable>
         <thead>
           <tr>
             <th>Name</th>
@@ -50,21 +60,46 @@ const DroneList: React.FC = () => {
         </thead>
         <tbody>
           {drones.map((drone) => (
-            <tr key={drone.id}>
-              <td>{drone.name}</td>
-              <td>{drone.description}</td>
-              <td>{drone.speedMs}</td>
-              <td>{drone.heightMeters}</td>
-              <td>{drone.heading}</td>
-              <td>
-                <button onClick={() => handleDelete(drone.id)}>Delete</button>
-                {/* You can add an Update button here to navigate to the update form */}
-              </td>
-            </tr>
+            <React.Fragment key={drone.id}>
+              <tr key={drone.id}>
+                <td>{drone.name}</td>
+                <td>{drone.description}</td>
+                <td>{drone.speedMs}</td>
+                <td>{drone.heightMeters}</td>
+                <td>{drone.heading}</td>
+                <td>
+                  <button onClick={() => handleDelete(drone.id)}>Delete</button>
+                  <button
+                    onClick={() =>
+                      setExpandedDroneId(
+                        drone.id === expandedDroneId ? null : drone.id
+                      )
+                    }
+                  >
+                    {expandedDroneId === drone.id ? (
+                      <FiChevronUp />
+                    ) : (
+                      <FiChevronDown />
+                    )}
+                    Update
+                  </button>
+                </td>
+              </tr>
+              {expandedDroneId === drone.id && (
+                <tr>
+                  <td colSpan={/* Number of your columns */ 8}>
+                    <DroneUpdateForm
+                      droneId={drone.id!}
+                      onUpdated={() => setExpandedDroneId(null)}
+                    />
+                  </td>
+                </tr>
+              )}
+            </React.Fragment>
           ))}
         </tbody>
-      </table>
-    </div>
+      </DroneTable>
+    </DroneListContainer>
   );
 };
 

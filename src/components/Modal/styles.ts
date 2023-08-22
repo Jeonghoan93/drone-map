@@ -22,5 +22,5 @@ export const ModalContent = styled.div`
 
   width: 100%;
 
-  max-width: ${sizes.modalMaxWidth}px;
+  max-width: ${sizes.screenMobileMaxWidth}px;
 `;

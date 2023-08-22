@@ -28,4 +28,6 @@ export const UpdateButton = styled.button`
   &:hover {
     background-color: #0056b3;
   }
+
+  box-sizing: border-box;
 `;

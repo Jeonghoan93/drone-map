@@ -27,6 +27,8 @@ export const StyledInput = styled.input<{
     opacity: 0.7;
     cursor: not-allowed;
   }
+
+  box-sizing: border-box;
 `;
 
 export const InputLabel = styled.label<{

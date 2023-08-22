@@ -16,10 +16,8 @@ const DroneForm: React.FC = () => {
     try {
       await createDrone(data);
       console.log("Drone created successfully");
-      // You can reset the form, redirect user or show success message here
     } catch (err) {
       console.error("Failed to create drone:", err);
-      // Handle error, e.g., show an error message to the user
     }
   };
 

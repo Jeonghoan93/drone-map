@@ -11,6 +11,8 @@ interface InputProps {
   pattern?: RegExp;
   register: UseFormRegister<FieldValues>;
   errors: FieldErrors;
+  min?: number;
+  max?: number;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -22,6 +24,8 @@ const Input: React.FC<InputProps> = ({
   required,
   pattern,
   errors,
+  min,
+  max,
 }) => {
   const [inputValue, setInputValue] = useState("");
   return (
@@ -31,6 +35,9 @@ const Input: React.FC<InputProps> = ({
         type={type}
         disabled={disabled}
         error={!!errors[id]}
+        min={min}
+        max={max}
+        step={type === "number" ? "0.0001" : undefined}
         {...register(id, { required, pattern })}
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}

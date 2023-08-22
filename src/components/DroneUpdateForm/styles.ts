@@ -13,7 +13,7 @@ export const FormContainer = styled.form`
   gap: 16px;
 `;
 
-export const CreateButton = styled.button`
+export const UpdateButton = styled.button`
   background-color: #007bff;
   color: #ffffff;
   padding: 12px 20px;

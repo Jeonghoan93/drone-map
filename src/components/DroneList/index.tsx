@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { deleteDrone } from "src/services/api";
+import { deleteDrone, getDrones } from "src/services/api";
 import { Drone } from "src/shared/types";
 
-import { fakeDronesData } from "src/assets/fake-data";
 import DroneUpdateForm from "../DroneUpdateForm";
 
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
@@ -21,9 +20,9 @@ const DroneList: React.FC = () => {
   useEffect(() => {
     const fetchDrones = async () => {
       try {
-        // const fetchedDrones = await getDrones();
+        const fetchedDrones = await getDrones();
 
-        setDrones(fakeDronesData);
+        setDrones(fetchedDrones);
       } catch (err) {
         setError(err.message);
       }

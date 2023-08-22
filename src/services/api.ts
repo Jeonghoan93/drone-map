@@ -29,15 +29,27 @@ export const getDroneById = async (id: number): Promise<Drone> => {
 export const createDrone = async (
   droneData: Omit<Drone, "id">
 ): Promise<Drone> => {
+  const allDrones = await getDrones();
+  const highestId = allDrones.reduce(
+    (maxId, drone) => Math.max(maxId, drone.id || 0),
+    0
+  );
+
+  const newDroneData = {
+    ...droneData,
+    id: highestId + 1,
+  };
+
   const response = await fetch(`${BASE_URL}/drones`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(droneData),
+    body: JSON.stringify(newDroneData),
   });
   if (!response.ok) {
-    throw new Error("Failed to create drone");
+    const errorMsg = await response.text();
+    throw new Error(`Failed to create drone: ${errorMsg}`);
   }
   return response.json();
 };

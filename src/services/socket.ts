@@ -1,5 +1,7 @@
-import { io } from "socket.io-client";
+const socket = new WebSocket("ws://localhost/ws");
 
-const socket = io("ws://localhost/ws");
+socket.addEventListener("message", (event) => {
+  console.log("Received:", event.data);
+});
 
 export default socket;

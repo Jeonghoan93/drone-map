@@ -4,15 +4,7 @@ import Input from "src/components/Input";
 import { getDroneById, updateDrone } from "src/services/api";
 import { CreateButton, FormContainer } from "./styles";
 
-type FormValues = {
-  name: string;
-  description: string;
-  lat: number;
-  lon: number;
-  speedMs: number;
-  heading: number;
-  heightMeters: number;
-};
+import { Drone } from "src/shared/types";
 
 interface DroneUpdateFormProps {
   droneId: number;
@@ -28,7 +20,7 @@ const DroneUpdateForm: React.FC<DroneUpdateFormProps> = ({
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm<FormValues>();
+  } = useForm<Drone>();
 
   useEffect(() => {
     async function fetchDroneData() {
@@ -36,8 +28,10 @@ const DroneUpdateForm: React.FC<DroneUpdateFormProps> = ({
         const drone = await getDroneById(droneId);
         setValue("name", drone.name);
         setValue("description", drone.description);
-        setValue("lat", drone.position?.lat);
-        setValue("lon", drone.position?.lon);
+        if (drone.position) {
+          setValue("position.lat", drone.position.lat);
+          setValue("position.lon", drone.position.lon);
+        }
         setValue("speedMs", drone.speedMs);
         setValue("heading", drone.heading);
         setValue("heightMeters", drone.heightMeters);
@@ -49,7 +43,7 @@ const DroneUpdateForm: React.FC<DroneUpdateFormProps> = ({
     fetchDroneData();
   }, [droneId, setValue]);
 
-  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+  const onSubmit: SubmitHandler<Drone> = async (data) => {
     try {
       await updateDrone(droneId, data);
 

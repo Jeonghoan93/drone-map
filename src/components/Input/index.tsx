@@ -7,7 +7,8 @@ interface InputProps {
   label: string;
   type?: string;
   disabled?: boolean;
-  required?: boolean;
+  required?: boolean | string;
+  pattern?: RegExp;
   register: UseFormRegister<FieldValues>;
   errors: FieldErrors;
 }
@@ -19,6 +20,7 @@ const Input: React.FC<InputProps> = ({
   disabled,
   register,
   required,
+  pattern,
   errors,
 }) => {
   const [inputValue, setInputValue] = useState("");
@@ -29,7 +31,7 @@ const Input: React.FC<InputProps> = ({
         type={type}
         disabled={disabled}
         error={!!errors[id]}
-        {...register(id, { required })}
+        {...register(id, { required, pattern })}
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
       />

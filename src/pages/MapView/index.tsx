@@ -8,53 +8,41 @@ import socket from "src/services/socket";
 const MapView: React.FC = () => {
   const [drones, setDrones] = useState<Drone[]>([]);
 
-  const updateDronesWithRealtimeData = (updatedDrone: Drone) => {
-    setDrones((prevState) => {
-      const otherDrones = prevState.filter(
-        (drone) => drone.id !== updatedDrone.id
+  const updateDroneRealTime = (updatedDrone: Drone) => {
+    setDrones((prevDrones) => {
+      return prevDrones.map((drone) =>
+        drone.id === updatedDrone.id ? updatedDrone : drone
       );
-      return [...otherDrones, updatedDrone];
     });
   };
 
-  const mapCenter: [number, number] = drones.length
-    ? [
-        drones.reduce(
-          (acc, drone) => (drone.position ? acc + drone.position.lat : acc),
-          0
-        ) / drones.length,
-        drones.reduce(
-          (acc, drone) => (drone.position ? acc + drone.position.lon : acc),
-          0
-        ) / drones.length,
-      ]
-    : [59.3293, 18.0686]; // Default to Stockholm
+  const defaultCenter: [number, number] = [59.3293, 18.0686]; // Default to Stockholm
 
   useEffect(() => {
-    const fetchDrones = async () => {
-      try {
-        const dronesData = await getDrones();
-        setDrones(dronesData);
-      } catch (error) {
+    getDrones()
+      .then((data) => {
+        console.log("Fetched drones:", data);
+        setDrones(data);
+      })
+      .catch((error) => {
         console.error("Error fetching drones:", error);
-      }
+      });
+
+    socket.onmessage = (event) => {
+      const updatedDrone: Drone = JSON.parse(event.data);
+      console.log("WebSocket drone update:", updatedDrone);
+      updateDroneRealTime(updatedDrone);
     };
-    fetchDrones();
 
-    socket.on("droneUpdate", (updatedDrone: Drone) => {
-      console.log("Received drone update:", updatedDrone);
-
-      updateDronesWithRealtimeData(updatedDrone);
-    });
-
+    // close when unmounted.
     return () => {
-      socket.off("droneUpdate", updateDronesWithRealtimeData); // clean up if component unmounts
+      socket.close();
     };
   }, []);
 
   return (
     <MapContainer
-      center={mapCenter}
+      center={defaultCenter}
       zoom={13}
       style={{ width: "100%", height: "600px" }}
     >

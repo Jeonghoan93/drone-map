@@ -4,31 +4,28 @@ import Input from "src/components/Input";
 import { createDrone } from "src/services/api";
 import { CreateButton, FormContainer } from "./styles";
 
-type FormValues = {
-  name: string;
-  description: string;
-  lat: number;
-  lon: number;
-  speedMs: number;
-  heading: number;
-  heightMeters: number;
-};
+import { Drone } from "src/shared/types";
 
 const DroneForm: React.FC = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormValues>();
+  } = useForm<Drone>();
 
-  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+  const onSubmit: SubmitHandler<Drone> = async (data) => {
     try {
       await createDrone(data);
-      console.log("Drone created successfully");
-      // You can reset the form, redirect user or show success message here
+
+      alert("Drone created successfully");
     } catch (err) {
       console.error("Failed to create drone:", err);
-      // Handle error, e.g., show an error message to the user
+      const errorMessage =
+        (err as any)?.response?.data?.message ||
+        "An unexpected error occurred. Please try again.";
+
+      alert(errorMessage);
+      //TODO can change this later for more user friendly
     }
   };
 
@@ -40,6 +37,7 @@ const DroneForm: React.FC = () => {
         register={register}
         errors={errors}
         required={true}
+        pattern={/^[a-zA-Z0-9]{3,}$/}
       />
 
       <Input
@@ -56,6 +54,8 @@ const DroneForm: React.FC = () => {
         register={register}
         errors={errors}
         required={true}
+        min={-90}
+        max={90}
       />
 
       <Input
@@ -65,6 +65,8 @@ const DroneForm: React.FC = () => {
         register={register}
         errors={errors}
         required={true}
+        min={-180}
+        max={180}
       />
       <Input
         id="speedMs"
@@ -73,6 +75,9 @@ const DroneForm: React.FC = () => {
         register={register}
         errors={errors}
         required={true}
+        min={0}
+        max={20}
+        pattern={/^\d+(\.\d{1,2})?$/}
       />
       <Input
         id="heading"

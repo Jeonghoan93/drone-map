@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
 import { InputContainer, InputLabel, StyledInput } from "./styles";
 
@@ -27,7 +27,15 @@ const Input: React.FC<InputProps> = ({
   min,
   max,
 }) => {
-  const [inputValue, setInputValue] = useState("");
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const [isFilled, setIsFilled] = useState(false);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      setIsFilled(inputRef.current.value !== "");
+    }
+  }, [inputRef]);
+
   return (
     <InputContainer>
       <StyledInput
@@ -39,10 +47,11 @@ const Input: React.FC<InputProps> = ({
         max={max}
         step={type === "number" ? "0.0001" : undefined}
         {...register(id, { required, pattern })}
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
+        onChange={(e) => {
+          setIsFilled(e.target.value !== "");
+        }}
       />
-      {inputValue === "" && (
+      {!isFilled && (
         <InputLabel htmlFor={id} error={!!errors[id]}>
           {label}
         </InputLabel>

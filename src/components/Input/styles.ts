@@ -13,6 +13,8 @@ export const StyledInput = styled.input<{
   font-weight: 300;
   height: 30px;
 
+  padding-left: 8px;
+
   background-color: #fff;
   border: 2px solid ${({ error }) => (error ? "#F87171" : "#D1D5DB")};
   border-radius: 8px;

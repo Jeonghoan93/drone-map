@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   MapContainer,
   Marker,
@@ -6,11 +6,12 @@ import {
   TileLayer,
   ZoomControl,
 } from "react-leaflet";
+import { useDrones } from "src/hooks/useDrones";
 import { getDrones } from "src/services/api"; // Adjust the path accordingly
 import { Drone } from "src/shared/types";
 
 const MapView: React.FC = () => {
-  const [drones, setDrones] = useState<Drone[]>([]);
+  const { drones, setDrones } = useDrones();
 
   const updateDroneRealTime = (updatedDrone: Drone) => {
     setDrones((prevDrones) => {

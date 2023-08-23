@@ -9,18 +9,23 @@ import Input from "src/components/Input";
 import { createDrone } from "src/services/api";
 import { CreateButton, FormContainer } from "./styles";
 
+import { useDrones } from "src/hooks/useDrones";
 import { Drone } from "src/shared/types";
 
-const DroneForm: React.FC = () => {
+const DroneCreateForm: React.FC = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Drone>();
 
+  const { drones, setDrones } = useDrones();
+
   const onSubmit: SubmitHandler<Drone> = async (data) => {
     try {
-      await createDrone(data);
+      const newDrone = await createDrone(data);
+
+      setDrones([...drones, newDrone]);
 
       alert("Drone created successfully");
     } catch (err) {
@@ -113,4 +118,4 @@ const DroneForm: React.FC = () => {
   );
 };
 
-export default DroneForm;
+export default DroneCreateForm;

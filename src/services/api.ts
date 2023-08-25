@@ -1,4 +1,4 @@
-import { Boundary, Drone } from "src/shared/types";
+import { Drone } from "src/shared/types";
 
 export const BASE_URL = "http://localhost:80";
 

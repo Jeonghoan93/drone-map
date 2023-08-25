@@ -7,21 +7,14 @@ import {
   ZoomControl,
 } from "react-leaflet";
 import { useDrones } from "src/hooks/useDrones";
-import { getDrones } from "src/services/api"; // Adjust the path accordingly
-import { Drone } from "src/shared/types";
+import useDroneWebsocket from "src/hooks/useDroneWebsocket";
+import { getDrones } from "src/services/api";
 
 const MapView: React.FC = () => {
   const { drones, setDrones } = useDrones();
+  const defaultCenter: [number, number] = [59.3293, 18.0686];
 
-  const updateDroneRealTime = (updatedDrone: Drone) => {
-    setDrones((prevDrones) => {
-      return prevDrones.map((drone) =>
-        drone.id === updatedDrone.id ? updatedDrone : drone
-      );
-    });
-  };
-
-  const defaultCenter: [number, number] = [59.3293, 18.0686]; // Default to Stockholm
+  useDroneWebsocket();
 
   useEffect(() => {
     getDrones()
@@ -29,21 +22,9 @@ const MapView: React.FC = () => {
         setDrones(data);
       })
       .catch((err) => {
-        throw new Error(err);
+        console.error("Failed to fetch drones:", err);
       });
-
-    const socket = new WebSocket("ws://localhost/ws");
-
-    socket.onmessage = (event) => {
-      const updatedDrone: Drone = JSON.parse(event.data);
-      updateDroneRealTime(updatedDrone);
-    };
-
-    // close when unmounted.
-    return () => {
-      socket.close();
-    };
-  }, []);
+  }, [setDrones]);
 
   return (
     <MapContainer

@@ -1,5 +1,5 @@
 import fetchMock from "fetch-mock";
-import { Boundary, Drone } from "src/shared/types";
+import { Drone } from "src/shared/types";
 import * as api from "./api";
 
 beforeEach(() => {
@@ -7,23 +7,6 @@ beforeEach(() => {
 });
 
 describe("API methods", () => {
-  it("fetches boundary successfully", async () => {
-    const mockBoundary: Boundary = {
-      centerPoint: {
-        lat: 50.5,
-        lon: 60.6,
-      },
-      radius: 100,
-    };
-
-    fetchMock.mock(`${api.BASE_URL}/boundary`, JSON.stringify(mockBoundary), {
-      method: "GET",
-    });
-
-    const result = await api.getBoundary();
-    expect(result).toEqual(mockBoundary);
-  });
-
   it("fetches drones successfully", async () => {
     const mockDrones: Drone[] = [
       {
@@ -103,11 +86,5 @@ describe("API methods", () => {
 
     const result = await api.createDrone(newDroneData);
     expect(result).toEqual(mockResponse);
-  });
-
-  it("handles fetch failure", async () => {
-    fetchMock.mock(`${api.BASE_URL}/boundary`, 500, { method: "GET" });
-
-    await expect(api.getBoundary()).rejects.toThrow("Failed to fetch boundary");
   });
 });

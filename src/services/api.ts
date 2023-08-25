@@ -2,14 +2,6 @@ import { Boundary, Drone } from "src/shared/types";
 
 export const BASE_URL = "http://localhost:80";
 
-export const getBoundary = async (): Promise<Boundary> => {
-  const response = await fetch(`${BASE_URL}/boundary`);
-  if (!response.ok) {
-    throw new Error("Failed to fetch boundary");
-  }
-  return response.json();
-};
-
 export const getDrones = async (): Promise<Drone[]> => {
   const response = await fetch(`${BASE_URL}/drones`);
   if (!response.ok) {
